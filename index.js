@@ -17,12 +17,12 @@ const daysOfTheWeek = {
 };
 
 const obj = {
-  slack_name: "Melvin Ugochukwu",
+  slack_name: "",
   current_day: daysOfTheWeek[date.getDay()],
   utc_time: date.toISOString().split(".")[0] + "Z",
-  track: "backend",
-  github_file_url: "",
-  github_repo_url: "",
+  track: "",
+  github_file_url: "https://github.com/melvinUGO/hng-stage1/blob/main/index.js",
+  github_repo_url: "https://github.com/melvinUGO/hng-stage1",
   status_code: 200,
 };
 
@@ -35,7 +35,11 @@ app.get("/", async (req, res) => {
 
 app.get("/api", async (req, res) => {
   const { slack_name, track } = req.query;
-  res.send("HNG stage 1");
+  if (slack_name || track) {
+    res.status(200).json({ ...obj, slack_name, track });
+  } else {
+    res.status(400).json({ message: "Provide query fields" });
+  }
 });
 
 app.listen(5000, () => console.log("server started"));
