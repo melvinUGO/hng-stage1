@@ -19,15 +19,12 @@ const daysOfTheWeek = {
 const obj = {
   slack_name: "",
   current_day: daysOfTheWeek[date.getDay()],
-  utc_time: date.toISOString().split(".")[0] + "Z",
+  utc_time: "",
   track: "",
   github_file_url: "https://github.com/melvinUGO/hng-stage1/blob/main/index.js",
   github_repo_url: "https://github.com/melvinUGO/hng-stage1",
   status_code: 200,
 };
-
-const item = new Date().getDay();
-console.log(date.toISOString().split(".")[0] + "Z");
 
 app.get("/", async (req, res) => {
   res.send("HNG stage 1");
@@ -36,7 +33,12 @@ app.get("/", async (req, res) => {
 app.get("/api", async (req, res) => {
   const { slack_name, track } = req.query;
   if (slack_name || track) {
-    res.status(200).json({ ...obj, slack_name, track });
+    res.status(200).json({
+      ...obj,
+      slack_name,
+      track,
+      utc_time: new Date().toISOString().split(".")[0] + "Z",
+    });
   } else {
     res.status(400).json({ message: "Provide query fields" });
   }
